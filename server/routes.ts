@@ -1156,16 +1156,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           first: 200,
           statuses: ["active", "trialing", "completed"]
         })) {
-          // Only include CryptoMind AI product memberships
+          // Only include Signalix V2 product memberships
           const productTitle = membership.product?.title || "";
-          const isCryptoMindProduct = productTitle.toLowerCase().includes("cryptomind");
+          const isSignalixProduct = productTitle.toLowerCase().includes("signalix");
 
-          if (!membership.canceled_at && isCryptoMindProduct) {
+          if (!membership.canceled_at && isSignalixProduct) {
             allMemberships.push(membership);
           }
         }
 
-        console.log(`[Whop] Found ${allMemberships.length} total active CryptoMind AI memberships in owner's company`);
+        console.log(`[Whop] Found ${allMemberships.length} total active Signalix V2 memberships in owner's company`);
 
         // STEP 3: Filter to only memberships that belong to THIS admin's stored members
         const memberships = allMemberships.filter(m =>
@@ -1302,9 +1302,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const allMembers = await storage.getStoredMembersByAdmin(user.userId, statuses);
 
-      // Filter to only show CryptoMind AI product members
+      // Filter to only show Signalix V2 product members
       const members = allMembers.filter(m =>
-        m.productTitle?.toLowerCase().includes("cryptomind")
+        m.productTitle?.toLowerCase().includes("signalix")
       );
 
       return res.json({
