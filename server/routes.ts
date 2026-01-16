@@ -1156,16 +1156,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           first: 200,
           statuses: ["active", "trialing", "completed"]
         })) {
-          // Only include Signalix V2 product memberships
+          // Only include CryptoMind AI product memberships
           const productTitle = membership.product?.title || "";
-          const isSignalixProduct = productTitle.toLowerCase().includes("signalix");
+          const isCryptoMindProduct = productTitle.toLowerCase().includes("cryptomind");
 
-          if (!membership.canceled_at && isSignalixProduct) {
+          if (!membership.canceled_at && isCryptoMindProduct) {
             allMemberships.push(membership);
           }
         }
 
-        console.log(`[Whop] Found ${allMemberships.length} total active Signalix V2 memberships in owner's company`);
+        console.log(`[Whop] Found ${allMemberships.length} total active CryptoMind AI memberships in owner's company`);
 
         // STEP 3: Filter to only memberships that belong to THIS admin's stored members
         const memberships = allMemberships.filter(m =>
@@ -1302,9 +1302,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const allMembers = await storage.getStoredMembersByAdmin(user.userId, statuses);
 
-      // Filter to only show Signalix V2 product members
+      // Filter to only show CryptoMind AI product members
       const members = allMembers.filter(m =>
-        m.productTitle?.toLowerCase().includes("signalix")
+        m.productTitle?.toLowerCase().includes("cryptomind")
       );
 
       return res.json({
@@ -1370,7 +1370,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Admin has no company ID configured" });
       }
 
-      const commissionAmount = parseInt(req.body.commissionAmount as string) || 1000;
+      const commissionAmount = parseInt(req.body.commissionAmount as string) || 500;
       const result = await syncMembershipsForCompany(admin.companyId, user.userId, commissionAmount);
 
       return res.json({
